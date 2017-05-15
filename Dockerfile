@@ -7,7 +7,7 @@ ARG PETSC_INSTALL_PATH=/opt/petsc
 
 RUN set -x \
     && apt-get update \
-    && apt-get install -y bison flex
+    && apt-get install -y bison flex cmake
 
 RUN set -x \
     && curl -fSL "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz" -o petsc.tar.gz \
@@ -27,7 +27,6 @@ RUN set -x \
         --download-hdf5 \
         --download-parmetis \
         --download-ptscotch \
-        --download-cmake \
         --download-fblaslapack \
         --prefix=${PETSC_INSTALL_PATH} \
         PETSC_ARCH=linux-gnu-c-shared \
