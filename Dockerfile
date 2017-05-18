@@ -1,4 +1,4 @@
-FROM jameshclrk/mpich:latest
+FROM jameshclrk/parmetis:latest
 
 MAINTAINER James Clark <james.clark@stfc.ac.uk>
 
@@ -7,7 +7,7 @@ ARG PETSC_INSTALL_PATH=/opt/petsc
 
 RUN set -x \
     && apt-get update \
-    && apt-get install -y bison flex cmake
+    && apt-get install -y bison flex
 
 RUN set -x \
     && curl -fSL "http://ftp.mcs.anl.gov/pub/petsc/release-snapshots/petsc-lite-${PETSC_VERSION}.tar.gz" -o petsc.tar.gz \
@@ -18,14 +18,18 @@ RUN set -x \
 	&& ./configure \
         --with-debugging=0 \
         --with-shared-libraries=1 \
+        --with-metis \
+        --with-metis-include="${PARMETIS_DIR}/include" \
+        --with-metis-lib=[-L${PARMETIS_DIR}/lib,-lmetis] \
+        --with-parmetis \
+        --with-parmetis-include="${PARMETIS_DIR}/include" \
+        --with-parmetis-lib=[-L${PARMETIS_DIR}/lib,-lparmetis] \
         --download-triangle \
         --download-ctetgen \
         --download-chaco \
-        --download-metis \
         --download-exodusii \
         --download-netcdf \
         --download-hdf5 \
-        --download-parmetis \
         --download-ptscotch \
         --download-fblaslapack \
         --prefix=${PETSC_INSTALL_PATH} \
